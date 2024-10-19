@@ -1,0 +1,69 @@
+<!-- Menu -->
+
+      <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+        <div class="app-brand demo">
+          <a routerLink="" class="app-brand-link">
+            <!-- <span class="app-brand-logo demo">LOGO GOES HERE</span> -->
+            <span class="app-brand-text demo  fw-bolder ms-2">FarePayer</span>
+          </a>
+
+          <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+            <i class="bx bx-chevron-left bx-sm align-middle"></i>
+          </a>
+        </div>
+
+        <div class="menu-inner-shadow"></div>
+
+        <ul class="menu-inner py-1">
+          <!-- Dashboard -->
+          <li class="menu-item" [ngClass]="{'active': currentRoute === '/'}">
+            <a routerLink="/" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-home-circle"></i>
+              Dashboard
+            </a>
+          </li>
+
+          <li class="menu-item" [ngClass]="{'active': currentRoute === '/query-listing' || currentRoute === '/add-query'}">
+            <a (click)="toggleMenu('Queries')" href="javascript:void(0);" class="menu-link menu-toggle">
+              <img src="https://cdn-icons-png.flaticon.com/512/9005/9005196.png" height="30" alt="">
+              Queries
+            </a>
+            <ul class="menu-sub" [ngClass]="{'show': menuStates['Queries']}">
+              <li class="menu-item" [ngClass]="{'active': currentRoute === '/query-listing'}">
+                <a routerLink="/query-listing" routerLinkActive="active" class="menu-link">
+                  Show All Queries
+                </a>
+              </li>
+              <li class="menu-item" [ngClass]="{'active': currentRoute === '/add-query'}">
+                <a routerLink="/add-query" class="menu-link">
+                  Add New Query
+                </a>
+              </li>
+              <!-- Add more items as needed -->
+            </ul>
+          </li>
+
+          <li class="menu-item" [ngClass]="{'active': currentRoute === '/itinerary-listing' || currentRoute === '/add-itinerary'}">
+            <a (click)="toggleMenu('Itineraries')" href="javascript:void(0);" class="menu-link menu-toggle">
+              <img src="https://img.clipart-library.com/2/clip-itinerary/clip-itinerary-8.png" height="30" alt="">
+              Itineraries
+            </a>
+            <ul class="menu-sub" [ngClass]="{'show': menuStates['Itineraries']}">
+              <li class="menu-item" [ngClass]="{'active': currentRoute === '/itinerary-listing'}">
+                <a routerLink="/itinerary-listing" class="menu-link">
+                  Show All Itineraries
+                </a>
+              </li>
+              <li class="menu-item" [ngClass]="{'active': currentRoute === '/add-itinerary'}">
+                <a  routerLink="/add-itinerary" class="menu-link">
+                  Add New Itinerary
+                </a>
+              </li>
+              <!-- Add more items as needed -->
+            </ul>
+          </li>
+
+          
+        </ul>
+      </aside>
+      <!-- / Menu -->

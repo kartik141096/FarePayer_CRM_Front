@@ -1,0 +1,17 @@
+.menu-sub {
+    display: none; /* Hide by default */
+  }
+  
+  .menu-sub.show {
+    display: block; /* Show when toggled */
+  }
+
+  .layout-menu{
+    position: fixed; /* Keeps it in place while scrolling */
+    top: 0; /* Aligns it to the top */
+    left: 0; /* Aligns it to the left */
+    width: 260px; /* Adjust as needed */
+    height: 100%; /* Full height */
+    overflow-y: auto; /* Allows scrolling if content overflows */
+    background-color: #f8f9fa; /* Background color */
+  }
