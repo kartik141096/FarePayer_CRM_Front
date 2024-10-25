@@ -4,27 +4,50 @@ import { QueryListingComponent } from './pages/query/query-listing/query-listing
 import { AddQueryComponent } from './pages/query/add-query/add-query.component';
 import { ItineraryListingComponent } from './pages/itinerary/itinerary-listing/itinerary-listing.component';
 import { AddItineraryComponent } from './pages/itinerary/add-itinerary/add-itinerary.component';
-
+import { LoginComponent } from './pages/login/login.component';
+import { AuthGuard } from './auth.guard';
 
 export const routes: Routes = [
+    { 
+        path: '', 
+        redirectTo: '/dashboard', 
+        pathMatch: 'full' 
+    },
+
     {
-        path:'',
-        component:DashboardComponent
+        path:'login',
+        component:LoginComponent
+    },
+    {
+        path:'dashboard',
+        component:DashboardComponent,
+        canActivate: [AuthGuard]
     },
     {
         path:'query-listing',
-        component:QueryListingComponent
+        component:QueryListingComponent,
+        canActivate: [AuthGuard]
     },
     {
         path:'add-query',
-        component:AddQueryComponent
+        component:AddQueryComponent,
+        canActivate: [AuthGuard]
     },
     {
         path:'itinerary-listing',
-        component:ItineraryListingComponent
+        component:ItineraryListingComponent,
+        canActivate: [AuthGuard]
     },
     {
         path:'add-itinerary',
-        component:AddItineraryComponent
+        component:AddItineraryComponent,
+        canActivate: [AuthGuard]
+    },
+
+
+
+    { 
+        path: '**', 
+        redirectTo: '/dashboard' 
     },
 ];

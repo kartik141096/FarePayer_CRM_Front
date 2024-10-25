@@ -1,28 +1,3 @@
-// import { CommonModule } from '@angular/common';
-// import { Component } from '@angular/core';
-// import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-
-
-
-// @Component({
-//   selector: 'app-sidebar',
-//   standalone: true,
-//   imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive],
-//   templateUrl: './sidebar.component.html',
-//   styleUrl: './sidebar.component.css'
-// })
-// export class SidebarComponent {
-
-//   menuStates: { [key: string]: boolean } = {};
-
-//   toggleMenu(menuKey: string) {
-//     this.menuStates[menuKey] = !this.menuStates[menuKey];
-//   }
-// }
-
-
-
-
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';

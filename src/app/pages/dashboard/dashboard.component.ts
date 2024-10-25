@@ -13,10 +13,19 @@ import { Chart, LinearScale, BarController, BarElement, Title, CategoryScale } f
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent implements AfterViewInit {
+  
+  
+
+
+
+
+  
+  
   @ViewChild('totalRevenueChart') totalRevenueChart!: ElementRef;
-  ngAfterViewInit() {
-    this.createChart();
-  }
+    
+    ngAfterViewInit() {
+      this.createChart();
+    }
 
   createChart() {
     const qty = document.getElementById('queriesthisChart') as HTMLCanvasElement;
