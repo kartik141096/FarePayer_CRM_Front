@@ -1,0 +1,9 @@
+.detail-btn :hover{
+    background-color: rgba(0, 255, 255, 0.651);
+    border-radius: 50px;
+
+}
+
+.accordion-button{
+    padding : 25px 10px 10px 10px;
+}

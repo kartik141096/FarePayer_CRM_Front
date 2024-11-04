@@ -40,12 +40,10 @@ export class LoginComponent {
     }
   }
 
-
-
   onSubmit(): void {
     this.apiservice.login(this.loginForm).subscribe({
       next: (response) => {
-        this.authService.login(response.token.plainTextToken);
+        this.authService.login(response.token.accessToken);
       },
       error: (error) => {
         console.error('Login failed:', error);

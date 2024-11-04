@@ -8,11 +8,6 @@ import { LoginComponent } from './pages/login/login.component';
 import { AuthGuard } from './auth.guard';
 
 export const routes: Routes = [
-    { 
-        path: '', 
-        redirectTo: '/dashboard', 
-        pathMatch: 'full' 
-    },
 
     {
         path:'login',
@@ -44,7 +39,11 @@ export const routes: Routes = [
         canActivate: [AuthGuard]
     },
 
-
+    { 
+        path: '', 
+        redirectTo: '/dashboard', 
+        pathMatch: 'full' 
+    },
 
     { 
         path: '**', 

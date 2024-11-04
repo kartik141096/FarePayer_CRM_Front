@@ -8,7 +8,6 @@ export class AuthService {
 
   constructor(private router: Router) {}
 
-
   isLoggedIn(): boolean {
     const token = localStorage.getItem('access_token');
     return !!token;
