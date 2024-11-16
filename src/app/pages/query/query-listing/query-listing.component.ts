@@ -1,24 +1,44 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { ApiService } from '../../../api.service';
 import { AuthService } from '../../../auth.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, ViewportScroller } from '@angular/common';
 import { LoadingService } from '../../../loading.service';
+import { FormsModule } from '@angular/forms';
+
+interface User {
+  id: number;
+  name: string;
+}
 
 @Component({
   selector: 'app-query-listing',
   standalone: true,
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, FormsModule],
   templateUrl: './query-listing.component.html',
   styleUrl: './query-listing.component.css'
 })
 
 export class QueryListingComponent {
 
-  constructor(private apiservice: ApiService, private router:Router, private authService:AuthService, private loadingService: LoadingService){}
-  
-  ngOnInit(): void {
-    this.getQueries();    
+  page = 1;
+  lastPage = 0;
+  totalQueries = 0;
+  users : User[]=[];
+  queries: any[] = [];
+  destinationList: any[] = [];
+  userRole = localStorage.getItem('user_role');
+  filterData = { created_from: '', created_to: '', updated_from: '', updated_to: '', search_by_id: '', status: '', search_by_name_email_mobile: '', destination: '', assigned_to: '', source: '', };
+
+  constructor(
+    private apiservice: ApiService,
+    private authService:AuthService, 
+    private loadingService: LoadingService,
+    private viewportScroller: ViewportScroller,
+  ){
+    this.getQueries(); 
+    this.getSalesUsers();
+    this.getQueryDestinations();   
   }
 
   @ViewChild('created_from') createdFrom!: ElementRef;
@@ -32,23 +52,6 @@ export class QueryListingComponent {
   @ViewChild('assigned_to') assignedTo!: ElementRef;
   @ViewChild('source') source!: ElementRef;
 
-  queries: any[] = [];
-  page = 1;
-  lastPage = 0;
-
-  filterData = {
-    created_from: '',
-    created_to: '',
-    updated_from: '',
-    updated_to: '',
-    search_by_id: '',
-    status: '',
-    search_by_name_email_mobile: '',
-    destination: '',
-    assigned_to: '',
-    source: '',
-  };
-
   protected removeFilters(){
 
     this.createdFrom.nativeElement.value = '';
@@ -59,8 +62,11 @@ export class QueryListingComponent {
     this.status.nativeElement.value = '';
     this.searchByNameEmailMobile.nativeElement.value = '';
     this.destination.nativeElement.value = '';
-    this.assignedTo.nativeElement.value = '';
-    this.source.nativeElement.value = '';
+    if(this.userRole == '1' || this.userRole == '2'){
+
+      this.assignedTo.nativeElement.value = '';
+      this.source.nativeElement.value = '';
+    }
 
     this.filterData = {
       created_from: '',
@@ -74,7 +80,6 @@ export class QueryListingComponent {
       assigned_to: '',
       source: '',
     };
-    
     this.getQueries();
   }
 
@@ -114,7 +119,7 @@ export class QueryListingComponent {
   }
 
   protected pageChange(offset: number | string){
-    if(offset == '+'){
+    if(offset == '+' && this.page < this.lastPage){
 
       this.page++;
       this.getQueries();
@@ -132,11 +137,14 @@ export class QueryListingComponent {
   }
 
   private getQueries(){
+
     this.loadingService.show();
     this.apiservice.getQueries(String(this.page), this.filterData).subscribe({
       next: (response) => {
         this.queries = response.data;
         this.lastPage = response.last_page;
+        this.totalQueries = response.total;
+        this.viewportScroller.scrollToPosition([0, 0]);
         this.loadingService.hide();
       },
       error: (error) => {
@@ -148,4 +156,31 @@ export class QueryListingComponent {
     });
   }
 
+  private getQueryDestinations(){
+    this.loadingService.show();
+    this.apiservice.getQueryDestinations().subscribe({
+      next: (response) => {
+        this.destinationList = response;
+        console.log(this.destinationList)
+        this.loadingService.hide();
+      },
+      error: (error) => {
+        this.loadingService.hide();
+      }
+    });
+  }
+
+  private getSalesUsers(){
+    this.loadingService.show();
+    this.apiservice.getSalesUsers('all').subscribe({
+      next: (response) => {
+        this.users = response;
+        this.loadingService.hide();
+
+      },
+      error: (error) => {
+        this.loadingService.hide();
+      }
+    });
+  }
 }

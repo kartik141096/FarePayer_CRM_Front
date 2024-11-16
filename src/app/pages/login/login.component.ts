@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../../api.service';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../auth.service';
+import { ToastService } from '../../toast.service';
+
 
 @Component({
   selector: 'app-login',
@@ -14,13 +15,16 @@ import { AuthService } from '../../auth.service';
 })
 export class LoginComponent {
 
-
   email: string = '';
   password: string = '';
   errorMessage: string = '';
   passtext = 'password';
 
-  constructor(private apiservice: ApiService, private router:Router, private authService:AuthService){}
+  constructor(
+    private apiservice: ApiService, 
+    private authService:AuthService, 
+    private toastService:ToastService,
+  ){}
 
   loginForm = {
     email: '',
@@ -34,19 +38,14 @@ export class LoginComponent {
       this.passtext = 'password';
   }
 
-  ngOnInit(): void {
-    if (this.authService.isLoggedIn()){
-      this.router.navigate(['/dashboard']);
-    }
-  }
-
   onSubmit(): void {
     this.apiservice.login(this.loginForm).subscribe({
       next: (response) => {
-        this.authService.login(response.token.accessToken);
+        this.authService.login(response.token, response.role.id, response.user_type, response.user_id);
       },
       error: (error) => {
-        console.error('Login failed:', error);
+        console.error('Login fails:', error);
+        this.toastService.showToast(error.error.error);
       }
     });
   }

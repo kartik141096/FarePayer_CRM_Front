@@ -1,52 +1,94 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { ModalComponent } from '../../../common/modal/modal.component';
-declare var $: any;
+import { FormsModule } from '@angular/forms';
+import { ApiService } from '../../../api.service';
+import { ToastService } from '../../../toast.service';
+import { Router } from '@angular/router';
+
+interface Destination {
+  id: number;
+  name: string;
+}
+
+interface Itinerary { 
+  name: string; 
+  startDate: string; 
+  endDate: string; 
+  type: string; 
+  destination: Destination[];  
+  adult_count: string; 
+  child_count: string; 
+  infant_count: string; note: string; 
+}
+
 @Component({
   selector: 'app-add-itinerary',
   standalone: true,
-  imports: [ModalComponent], // Import modal component here
+  imports: [CommonModule, FormsModule], // Import modal component here
   templateUrl: './add-itinerary.component.html',
   styleUrls: ['./add-itinerary.component.css']
 })
+
 export class AddItineraryComponent {
-  modalTitle: string = '';
-  modalContent: string = '';
 
-  openModal(event: any) {
-    const selectedValue = event.target.value;
+  searchTerm: string = '';
+  filteredCities: Destination[] = [];
+  selectedDestinations: Destination[] = [];
 
-    if (selectedValue === '1') {
-      this.modalTitle = 'Option 1 Selected';
-      this.modalContent = 'You selected Option 1!';
-    } else if (selectedValue === '2') {
-      this.modalTitle = 'Option 2 Selected';
-      this.modalContent = 'You selected Option 2!';
-    } else if (selectedValue === '3') {
-      this.modalTitle = 'Option 3 Selected';
-      this.modalContent = 'You selected Option 3!';
-    } else if (selectedValue === '4') {
-      this.modalTitle = 'Option 4 Selected';
-      this.modalContent = 'You selected Option 4!';
-    } else if (selectedValue === '5') {
-      this.modalTitle = 'Option 5 Selected';
-      this.modalContent = 'You selected Option 5!';
-    } else if (selectedValue === '6') {
-      this.modalTitle = 'Option 6 Selected';
-      this.modalContent = 'You selected Option 6!';
-    } else if (selectedValue === '7') {
-      this.modalTitle = 'Option 7 Selected';
-      this.modalContent = 'You selected Option 7!';
-    } else if (selectedValue === '8') {
-      this.modalTitle = 'Option 8 Selected';
-      this.modalContent = 'You selected Option 8!';
+  itinerary:Itinerary = { name: '', startDate: '', endDate: '', type: '', destination: [],  adult_count: '0', child_count: '0', infant_count: '0', note: '' };
+
+  constructor(
+    private apiservice: ApiService,
+    private toastservice: ToastService,
+    private router: Router,
+  ){}
+
+  onSearchChange(): void {
+    if (this.searchTerm) {
+      this.filteredCities = [];
+      this.apiservice.searchCities(this.searchTerm).subscribe({
+        next: (response) => {
+          this.filteredCities = response;
+        },
+        error: (error) => {
+          console.error('Error searching cities:', error);
+        },
+      });
     } else {
-      // Default case if needed
-      this.modalTitle = 'No Option Selected';
-      this.modalContent = 'Please select an option.';
+      this.filteredCities = [];
     }
+  }
 
-    console.log("Opening modal with title:", this.modalTitle);
-    // Use jQuery to open modal
-    $('#modal').modal('show');
+  selectCity(city: Destination): void {
+
+    const cityExists = this.itinerary.destination?.some(destination => destination.id === city.id);
+  
+    if (!cityExists) {
+      if (!this.itinerary.destination) {
+        this.itinerary.destination = [];
+      }
+      this.itinerary.destination.push({ id: city.id, name: city.name });
+      this.searchTerm = '';
+    } else {
+      this.toastservice.showToast(city.name + " already selected");
+    }
+    this.filteredCities = [];
+  }
+  
+  deleteDestinationById(id: number): void {
+    this.itinerary.destination = this.selectedDestinations.filter(destination => destination.id !== id);
+  }
+  
+  onSubmit(){
+    this.apiservice.addItinerary(this.itinerary).subscribe({
+      next: () => {
+        this.toastservice.showToast("User updated successfully");
+        this.router.navigate([`/itinerary-listing`]);
+      },
+      error: (error) => {
+        console.error('Failed to update user', error);
+        this.toastservice.showToast(error.error.message);
+      }
+    });
   }
 }

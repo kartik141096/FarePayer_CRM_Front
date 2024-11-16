@@ -2,8 +2,8 @@
     <!-- Content -->
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row">
-            <h4 class="fw-bold col-md-10"><span class="text-muted fw-light">Queries /</span> Queries Listing</h4>
-            <a routerLink="/add-query" class="btn btn-primary col-md-2">Add new Query</a>
+            <h4 class="fw-bold col-md-10"><span class="text-muted fw-light">Queries /</span> Queries Listing <span class="text-muted">({{totalQueries}})</span></h4> 
+            <a *ngIf="this.userRole =='1' || this.userRole =='2' " routerLink="/add-query" class="btn btn-primary col-md-2">Add new Query</a>
         </div>
         <div class="accordion mt-3 mb-3" id="accordionExample">
             <div class="card accordion-item">
@@ -33,7 +33,7 @@
                         </div>
                         <div class="col-md-2">
                             <label for="defaultFormControlInput" class="form-label">Search By ID</label>
-                            <input type="text" (change)="updateFilterData('search_by_id', search_by_id.value)" #search_by_id class="form-control" id="defaultFormControlInput" aria-describedby="defaultFormControlHelp" />
+                            <input type="text" placeholder="ID No." (change)="updateFilterData('search_by_id', search_by_id.value)" #search_by_id class="form-control" id="defaultFormControlInput" aria-describedby="defaultFormControlHelp" />
                         </div>
                         <div class="col-md-2">
                             <label for="defaultFormControlInput" class="form-label">Status</label>
@@ -51,32 +51,24 @@
                     <div class="row">
                         <div class="col-md-3">
                             <label for="defaultFormControlInput" class="form-label">Search By - Name, Email, Mobile</label>
-                            <input type="text" (change)="updateFilterData('search_by_name_email_mobile', search_by_name_email_mobile.value)" #search_by_name_email_mobile class="form-control" id="defaultFormControlInput" aria-describedby="defaultFormControlHelp" />
+                            <input type="text" placeholder="Name | Email | Mobile" (change)="updateFilterData('search_by_name_email_mobile', search_by_name_email_mobile.value)" #search_by_name_email_mobile class="form-control" id="defaultFormControlInput" aria-describedby="defaultFormControlHelp" />
                         </div>
                         <div class="col-md-3">
                             <label for="defaultFormControlInput" class="form-label">Destination</label>
+
                             <select class="form-select" (change)="updateFilterData('destination', destination.value)" #destination>
                                 <option value="">All Destinations</option>
-                                <option value="Dubai">Dubai</option>
-                                <option value="Canada">Canada</option>
-                                <option value="United Kingdom">United Kingdom</option>
-                                <option value="Brazil">Brazil</option>
-                                <option value="Thailand">Thailand</option>
+                                <option *ngFor="let destination of destinationList" value="{{destination.id}}">{{destination.destination_name}}</option>
                             </select>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-2" *ngIf="this.userRole =='1' || this.userRole =='2' ">
                             <label for="defaultFormControlInput" class="form-label">Assigned To</label>
                             <select class="form-select" (change)="updateFilterData('assigned_to', assigned_to.value)" #assigned_to>
                                 <option value="">All</option>
-                                <option value="John Doe">John Doe</option>
-                                <option value="Kabir">Kabir</option>
-                                <option value="Rohan">Rohan</option>
-                                <option value="Priyanka">Priyanka</option>
-                                <option value="Sonali">Sonali</option>
-                                <option value="Ritika">Ritika</option>
+                                <option *ngFor="let user of users"  [ngValue]="user.id">{{user.name}}</option>
                             </select>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-2" *ngIf="this.userRole =='1' || this.userRole =='2' ">
                             <label for="defaultFormControlInput" class="form-label">Source</label>
                             <select class="form-select" (change)="updateFilterData('source', source.value)" #source>
                                 <option value="">All</option>
@@ -89,7 +81,7 @@
                         </div>
                         <div class="col-md-2">
                             <label for="defaultFormControlInput" class="form-label">Clear All</label>
-                            <button (click)="removeFilters()" class="btn btn-danger"><strong>Remove Filters</strong></button>
+                            <button (click)="removeFilters()" class="form-control btn btn-danger"><strong>Remove Filters</strong></button>
                         </div>
                     </div>
                 </div>
@@ -122,9 +114,10 @@
                             <p>{{query.email}}</p>
                         </td>
                         <td>
-                            <strong>{{query.destination}}</strong>
-                            <p><img src="https://static-00.iconduck.com/assets.00/calendar-icon-1995x2048-tot17508.png" height=15 alt=""> {{query.from_date}} | {{query.to_date}}</p>
-                            <p>{{query.adult_count}} Adult, {{query.child_count}} Child, {{query.infant_count}} Infant</p>
+                            <strong>{{query.destination_name}}</strong><br><br>
+                            <span><img src="assets/img/icons/custom/date.png" height=15 alt=""><strong> Check In: </strong>{{query.from_date}}</span><br>
+                            <span><img src="assets/img/icons/custom/date.png" height=15 alt=""><strong> Check Out: </strong>{{query.to_date}}</span><br><br>
+                            <span>{{query.adult_count}} Adult, {{query.child_count}} Child, {{query.infant_count}} Infant</span>
                         </td>
                         <td>{{query.created_on}}</td>
                         <td>{{query.updated_on}}</td>

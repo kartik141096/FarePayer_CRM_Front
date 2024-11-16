@@ -2,8 +2,7 @@ import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { SidebarComponent } from '../../common/sidebar/sidebar.component';
 import { NavbarComponent } from '../../common/navbar/navbar.component';
 import { Chart, LinearScale, BarController, BarElement, Title, CategoryScale } from 'chart.js';
-
-
+import { ApiService } from '../../api.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,12 +13,7 @@ import { Chart, LinearScale, BarController, BarElement, Title, CategoryScale } f
 })
 export class DashboardComponent implements AfterViewInit {
   
-  
-
-
-
-
-  
+  constructor(private apiservice:ApiService){}
   
   @ViewChild('totalRevenueChart') totalRevenueChart!: ElementRef;
     

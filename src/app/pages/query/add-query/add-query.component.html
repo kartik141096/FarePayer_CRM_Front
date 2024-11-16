@@ -12,15 +12,15 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="mb-3">
-                    <label class="form-label" for="basic-default-fullname">Mobile Number</label>
+                    <label class="form-label" for="basic-default-fullname">Mobile Number <span class="text-danger h6">*</span></label>
                     <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.mobile" id="basic-default-fullname" placeholder="+91 856 9586 405" />
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="mb-3">
-                    <label class="form-label" for="basic-default-company">Email ID</label>
+                    <label class="form-label" for="basic-default-company">Email ID <span class="text-danger h6">*</span></label>
                     <div class="input-group input-group-merge">
-                      <input type="mail" id="basic-default-email" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.email" placeholder="john.doe" aria-label="john.doe" aria-describedby="basic-default-email2" />
+                      <input type="mail" id="basic-default-email" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.email" placeholder="john.doe@example.com" aria-label="john.doe" aria-describedby="basic-default-email2" />
                       <span class="input-group-text" id="basic-default-email2">&#64;example.com</span>
                     </div>
                   </div>
@@ -29,8 +29,8 @@
               <div class="row">
                 <div class="col-md-2">
                   <div class="mb-3">
-                    <label for="exampleFormControlSelect1" class="form-label">Title</label>
-                    <select class="form-select" id="exampleFormControlSelect1" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.title" aria-label="Default select example">
+                    <label for="exampleFormControlSelect1" class="form-label">Title <span class="text-danger h6">*</span></label>
+                    <select class="form-select" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.title">
                       <option [ngValue]="''" disabled>Select</option>
                       <option value="Mr.">Mr.</option>
                       <option value="Ms.">Ms.</option>
@@ -42,60 +42,61 @@
                 </div>
                 <div class="col-md-4">
                     <div class="mb-3">
-                      <label class="form-label" for="basic-default-fullname">Client Name</label>
-                      <input type="text" class="form-control" id="basic-default-fullname" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.name" placeholder="John Doe" />
+                      <label class="form-label" for="basic-default-fullname">Client Name <span class="text-danger h6">*</span></label>
+                      <input type="text" class="form-control" id="basic-default-fullname" name="name" id="name" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.name" placeholder="John Doe" />
                     </div>
                 </div>
                 <div class="col-md-6">
                   <div class="mb-3">
-                    <label class="form-label" for="basic-default-fullname">Destination</label>
-                    <select class="form-select" id="exampleFormControlSelect1" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.destination" aria-label="Default select example">
-                      <option [ngValue]="''" disabled>Select Destination</option>
-                      <option value="India">India</option>
-                      <option value="Canada">Canada</option>
-                      <option value="United Kingdom">United Kingdom</option>
-                      <option value="Brazil">Brazil</option>
-                    </select>
+                    <label class="form-label" for="basic-default-fullname">Destination <span class="text-danger h6">*</span></label>
+                    
+                    <input type="text" class="form-control" [(ngModel)]="searchTerm" name="dest" (ngModelChange)="onSearchChange()" placeholder="Search Destination"  autocomplete="off"/>
+                
+                    <div *ngIf="searchTerm.length > 0 && filteredCities.length > 0" class="custom-dropdown">
+                      <div class="custom-dropdown-item" *ngFor="let city of filteredCities" (click)="selectCity(city)">
+                        {{ city.name }}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-3">
                   <div class="mb-3">
-                    <label class="form-label" for="basic-default-fullname">From Date</label>
+                    <label class="form-label" for="basic-default-fullname">From Date <span class="text-danger h6">*</span></label>
                     <input type="date" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.from_date" id="basic-default-fullname" placeholder="John Doe" />
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="mb-3">
-                    <label class="form-label" for="basic-default-fullname">To Date</label>
+                    <label class="form-label" for="basic-default-fullname">To Date <span class="text-danger h6">*</span></label>
                     <input type="date" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.to_date" id="basic-default-fullname" placeholder="John Doe" />
                   </div>
                 </div>
                 <div class="col-md-2">
                   <div class="mb-3">
-                    <label class="form-label" for="basic-default-fullname">Adults count</label>
-                    <input type="number" value="0" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.adult_count" class="form-control" id="basic-default-fullname" placeholder="John Doe" />
+                    <label class="form-label" for="basic-default-fullname">Adults count <span class="text-danger h6">*</span></label>
+                    <input type="number" value="0" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.adult_count" min="0" class="form-control" id="basic-default-fullname" />
                   </div>
                 </div>
                 <div class="col-md-2">
                   <div class="mb-3">
-                    <label class="form-label" for="basic-default-fullname">child count</label>
-                    <input type="number" value="0" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.child_count" class="form-control" id="basic-default-fullname" placeholder="John Doe" />
+                    <label class="form-label" for="basic-default-fullname">child count <span class="text-danger h6">*</span></label>
+                    <input type="number" value="0" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.child_count" min="0" class="form-control" id="basic-default-fullname" />
                   </div>
                 </div>
                 <div class="col-md-2">
                   <div class="mb-3">
-                    <label class="form-label" for="basic-default-fullname">Infant count</label>
-                    <input type="number" value="0" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.infant_count" class="form-control" id="basic-default-fullname" placeholder="John Doe" />
+                    <label class="form-label" for="basic-default-fullname">Infant count <span class="text-danger h6">*</span></label>
+                    <input type="number" value="0" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.infant_count" min="0" class="form-control" id="basic-default-fullname" />
                   </div>
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                   <div class="mb-3">
-                    <label class="form-label" for="basic-default-fullname">Lead Source</label>
-                    <select class="form-select" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.source" id="exampleFormControlSelect1" aria-label="Default select example">
+                    <label class="form-label" for="basic-default-fullname">Lead Source <span class="text-danger h6">*</span></label>
+                    <select class="form-select" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.source">
                       <option [ngValue]="''" disabled>Select Source</option>
                       <option value="Facebook">Facebook</option>
                       <option value="Instagram">Instagram</option>
@@ -104,10 +105,10 @@
                     </select>
                   </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                   <div class="mb-3">
-                    <label class="form-label" for="basic-default-fullname">Lead Priority</label>
-                    <select class="form-select" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.priority" id="exampleFormControlSelect1" aria-label="Default select example">
+                    <label class="form-label" for="basic-default-fullname">Lead Priority <span class="text-danger h6">*</span></label>
+                    <select class="form-select" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.priority">
                       <option [ngValue]="''" disabled>Select Priority</option>
                       <option value="Urgent">Urgent</option>
                       <option value="High">High</option>
@@ -116,15 +117,22 @@
                     </select>
                   </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
+                  <div class="mb-3">
+                    <label class="form-label" for="basic-default-fullname">Query Type</label>
+                    <select class="form-select" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.query_type" (change)="getSalesUsers()">
+                      <option  [ngValue]="''" disabled>Select</option>
+                      <option value="B2C">B2C - Farepayer</option>
+                      <option value="B2B">B2B - Vaayutrip</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-3">
                   <div class="mb-3">
                     <label class="form-label" for="basic-default-fullname">Assign To</label>
-                    <select class="form-select" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.assign_to" id="exampleFormControlSelect1" aria-label="Default select example">
-                      <option  [ngValue]="''" disabled>Asign User</option>
-                      <option value="Rohit">Rohit</option>
-                      <option value="Shivam">Shivam</option>
-                      <option value="Rajat">Rajat</option>
-                      <option value="Meenakshi">Meenakshi</option>
+                    <select class="form-select" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.assign_to">
+                      <option  [ngValue]="'un-assigned'" disabled>Asign User</option>
+                      <option *ngFor="let user of users"  [ngValue]="user.id">{{user.name}}</option>
                     </select>
                   </div>
                 </div>

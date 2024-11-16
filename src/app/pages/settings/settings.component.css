@@ -1,0 +1,9 @@
+.box{
+    text-decoration: none;
+}
+
+.box:hover{
+    background-color: #00afef50;
+    transition-duration: .5s;
+    border-radius: 50px;
+}
