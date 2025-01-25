@@ -58,14 +58,14 @@
 
                             <select class="form-select" (change)="updateFilterData('destination', destination.value)" #destination>
                                 <option value="">All Destinations</option>
-                                <option *ngFor="let destination of destinationList" value="{{destination.id}}">{{destination.destination_name}}</option>
+                                <option *ngFor="let destination of destinationList" value="{{destination.id}}">{{destination.name}}</option>
                             </select>
                         </div>
                         <div class="col-md-2" *ngIf="this.userRole =='1' || this.userRole =='2' ">
                             <label for="defaultFormControlInput" class="form-label">Assigned To</label>
                             <select class="form-select" (change)="updateFilterData('assigned_to', assigned_to.value)" #assigned_to>
                                 <option value="">All</option>
-                                <option *ngFor="let user of users"  [ngValue]="user.id">{{user.name}}</option>
+                                <option *ngFor="let user of users"  value="{{user.id}}">{{user.name}}</option>
                             </select>
                         </div>
                         <div class="col-md-2" *ngIf="this.userRole =='1' || this.userRole =='2' ">
@@ -91,40 +91,44 @@
     <div class="card mb-4">
         <div class="table-responsive text-nowrap">
             <table class="table table-hover text-center">
+                <div class="container">
+
+                </div>
                 <thead>
                     <tr>
                         <th>Query Details</th>
                         <th>Client Details</th>
                         <th>Tour Details</th>
-                        <th>Created On</th>
-                        <th>Last Update</th>
-                        <th>Action</th>
+                        <th>Query Status</th>
+                        <th>Dates</th>
                     </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
                     <tr *ngFor="let query of queries">
                         <td>
-                            <strong>{{query.id}}</strong><br>
+                            <strong>{{query.id}}</strong><br><br>
                             <p class="badge bg-label-primary me-1">{{query.status}}</p><br>
-                            <span class="badge bg-label-danger me-1">{{query.source}}</span>
+                            <span class="badge bg-label-warning me-1">{{query.source}}</span>
                         </td>
-                        <td>
-                            <strong>{{query.title}} {{query.name}}</strong>
-                            <p>{{query.mobile}}</p>
-                            <p>{{query.email}}</p>
-                        </td>
-                        <td>
-                            <strong>{{query.destination_name}}</strong><br><br>
-                            <span><img src="assets/img/icons/custom/date.png" height=15 alt=""><strong> Check In: </strong>{{query.from_date}}</span><br>
-                            <span><img src="assets/img/icons/custom/date.png" height=15 alt=""><strong> Check Out: </strong>{{query.to_date}}</span><br><br>
+                        <td class="lh-2">
+                            <span class=""><strong>{{query.title}} {{query.name}}</strong></span><br>
+                            <span><img src="assets/img/icons/custom/mobile.webp" height=12 alt=""> {{query.mobile}}</span>
+                            <p><img src="assets/img/icons/custom/mail.png" height=10 alt=""> {{query.email}}</p>
                             <span>{{query.adult_count}} Adult, {{query.child_count}} Child, {{query.infant_count}} Infant</span>
                         </td>
-                        <td>{{query.created_on}}</td>
-                        <td>{{query.updated_on}}</td>
+                        <td style="width: 150px;">
+                            <strong class="text-secondary">{{query.destinations}}</strong><br><br>
+                            <span><img src="assets/img/icons/custom/date.png" height=15 alt=""><strong class="text-primary"> Check In: </strong>{{dateFormat(query.from_date)}}</span><br>
+                            <span><img src="assets/img/icons/custom/date.png" height=15 alt=""><strong class="text-primary"> Check Out: </strong>{{dateFormat(query.to_date)}}</span><br><br>
+                        </td>
                         <td>
-                            <a href="" class="detail-btn btn">
-                                <img src="https://icons.veryicon.com/png/o/miscellaneous/new-version-of-star-selected-icon/view-more.png" height="40" alt="">
-                            </a>
+                            <p><strong class="text-dark">Priority : </strong><span class="badge bg-label-danger me-1">{{query.priority}}</span></p>
+                            <span><strong class="text-dark">Assign To : </strong><span>{{query.assign_to.name}}</span></span>
+                            <p><span class="badge bg-label-primary me-1">{{query.assign_to.email}}</span></p>
+                        </td>
+                        <td>
+                            <p><strong class="text-dark">Created On : </strong><span>{{dateFormat(query.created_on)}}</span></p>
+                            <p><strong class="text-dark">Updated On : </strong><span>{{dateFormat(query.updated_on)}}</span></p>
                         </td>
                     </tr>
                 </tbody>

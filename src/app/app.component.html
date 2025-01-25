@@ -1,6 +1,12 @@
 <ng-container *ngIf="is_login_page==1; else elseTemplate">
   <app-login></app-login>
   <app-toast></app-toast>
+  <div class="layout-overlay layout-menu-toggle"></div>
+  <div *ngIf="loading$ | async" class="loader-overlay">
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
 </ng-container>
 
 <ng-template #elseTemplate>

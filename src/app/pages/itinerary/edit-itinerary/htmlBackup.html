@@ -1,0 +1,245 @@
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-md-1">
+            <button class="btn btn-success" [routerLink]="['/itinerary-listing']"><i class="bx bx-arrow-back"></i></button>
+        </div>
+        <div class="col-md-7 pt-2">
+            <h4 class="fw-bold col-md-10"><span class="text-muted fw-light">Itineraries /</span> Itinerary Details</h4>  
+        </div>
+        <div class="col-md-4">
+            <div class="float-right">
+                <button class="btn btn-primary ml-2" (click)="saveItinerary()">Save Itinerary</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content-wrapper">
+    <!-- Content -->
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="row">
+            <div class="itinerary-name text-center">
+                <h3>{{itinerary.name}} - ({{itinerary.duration}})</h3>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-md-2 side-bar">
+                <ul>
+                    <li [ngClass]="{'active card': activeDay === day.day}" *ngFor="let day of this.itinerary.itinerary_master" (click)="changeActiveDay(day.day)">
+                        <p class="h4">Day {{ day.day }}</p>
+                        <select class="form-select" [(ngModel)]="day.itinerary_destination_id" (change)="changeDayDestination($event)">
+                            <option value="{{destination.id}}" *ngFor="let destination of itinerary.destinations">{{destination.name}}</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-md-7 itinerary-body" *ngFor="let day of this.itinerary.itinerary_master" [ngClass]="{'d-none': activeDay !== day.day}">
+                
+                <div class="card mb-2 p-3 mt-3 pointer" (click)="openModal('editDayHeadModal')">
+                    <strong>{{day.day_heading}}</strong>
+                    <p class="pt-3 f-2">{{itinerary.itinerary_master[activeDay-1].day_description}}</p>
+                </div>
+
+                <div class="card pointer mb-2 p-3 mt-3">
+                    <!-- <hr> -->
+                    <div class="row">
+                        <div class="border-bottom">
+                            <h4 class="pt-2"><strong>Orchid Hotel Dubai</strong></h4>
+                        </div>
+                        <div class="pt-2 row">
+                            <div class="col-md-3 d-flex align-items-center justify-content-center border-right">
+                                <img src="https://cdni.iconscout.com/illustration/premium/thumb/hotel-illustration-download-in-svg-png-gif-file-formats--seven-star-building-popular-pack-people-illustrations-5868697.png?f=webp" height="100" alt="">
+                            </div>
+                            <div class="col-md-9">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <strong>Check-In</strong><br>
+                                        <img src="assets/img/icons/custom/date.png" height=15 alt="">
+                                        <span class="f-2"> 16/10/2024</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <strong>Check-Out</strong><br>
+                                        <img src="assets/img/icons/custom/date.png" height=15 alt="">
+                                        <span class="f-2"> 16/10/2024</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <strong>Room Type</strong><br>
+                                        <img src="assets/img/icons/custom/house.png" height=15 alt="">
+                                        <span class="f-2"> Standard Room</span>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                        <span class="mb-2"><strong>Room : </strong><span class="f-2">1 Double | </span><strong>Meal : </strong><span class="f-2">Breakfast</span></span>
+                                        <p class="message text-danger">Rates are subject of availability</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 
+
+            </div>
+            
+            <div class="col-md-3 itinerary-option">
+                <select class="form-select mt-2" (change)="renderOptionList($event)" [ngModel]="itineraryOptionsList.active">
+                    <option value="" selected>Select</option>
+                    <option value="Accommodation">Accommodation</option>
+                    <option value="Activity">Activity</option>
+                    <option value="Transportation">Transportation</option>
+                    <option value="Insurance/Visa">Insurance/Visa</option>
+                    <option value="Meal">Meal</option>
+                    <option value="Flight">Flight</option>
+                    <option value="Leisure">Leisure</option>
+                    <option value="Cruise">Cruise</option>
+                </select>
+                <P class="message pt-1 text-center">Suggested accomodation in <STRONG class="text-primary">{{activeDayDestination.name}}</STRONG></P>
+                <div *ngIf="this.itineraryOptionsList.active == 'Accommodation'">
+                    <div class="card pointer mb-2 pt-2" (click)="openModal('addHotelModal')" (click)="addHotel(hotel.id, hotel.name)" *ngFor="let hotel of itineraryOptionsList.hotels">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <img src="https://cdni.iconscout.com/illustration/premium/thumb/hotel-illustration-download-in-svg-png-gif-file-formats--seven-star-building-popular-pack-people-illustrations-5868697.png?f=webp" height="40" alt="">
+                            </div>
+                            <div class="col-md-9">
+                                {{hotel.name}}
+                                <p class="message text-gold">{{hotel.category}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- MODALS COLLECTION -->
+<div *ngIf="renderOnInit" name="modalCollections">
+    <!-- Day - Heading/Desription  -->
+    <div class="modal fade" id="editDayHeadModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Edit Heading / Description of Day {{activeDay}}</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal('editDayHeadModal')">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label" for="basic-default-fullname">Heading<span class="text-danger h6">*</span></label>
+                    <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="itinerary.itinerary_master[activeDay-1].day_heading"/>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="basic-default-fullname">Description<span class="text-danger h6">*</span></label>
+                    <textarea class="form-control" cols="30" rows="10" [ngModelOptions]="{standalone: true}" [(ngModel)]="itinerary.itinerary_master[activeDay-1].day_description"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="closeModal('editDayHeadModal')">Close</button>
+              <button type="button" class="btn btn-primary" (click)="updateDayHeadingOrDescription()">Update</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    
+    <!-- Add Accomodation Details -->
+    <div class="modal fade" id="addHotelModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">{{newAccomodation.name}}</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal('addHotelModal')">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" (change)="filterHotelPrice()">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label" for="basic-default-fullname">Checkin Date<span class="text-danger h6">*</span></label>
+                            <input type="date" class="form-control" [(ngModel)]="newAccomodation.checkin">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label" for="basic-default-fullname">Checkout Date<span class="text-danger h6">*</span></label>
+                            <input type="date" class="form-control" [(ngModel)]="newAccomodation.checkout">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label" for="basic-default-fullname">Room Type<span class="text-danger h6">*</span></label>
+                            <select class="form-select" [(ngModel)]="newAccomodation.roomType">
+                                <option value="0">Select</option>
+                                <option value="{{item.id}}" *ngFor="let item of roomTypes">{{item.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label" for="basic-default-fullname">Meal Plan<span class="text-danger h6">*</span></label>
+                            <select class="form-select" [(ngModel)]="newAccomodation.mealPlan">
+                                <option value="0">Select</option>
+                                <option value="{{item.id}}" *ngFor="let item of mealPlans">{{item.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="container border pt-2 pb-2 form-control" style="background-color: rgba(68, 71, 68, 0.068);">
+                    <div class="pt-2 pb-2">
+                        <strong>Enter Number of Rooms</strong>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="mb-2 text-center">
+                                <label class="form-label f-1" for="basic-default-fullname">Single<span class="text-danger h6">*</span></label>
+                                <input type="number" class="form-control" [(ngModel)]="newAccomodation.numberOfRooms.single">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="mb-2 text-center">
+                                <label class="form-label f-1" for="basic-default-fullname">Double<span class="text-danger h6">*</span></label>
+                                <input type="number" class="form-control" [(ngModel)]="newAccomodation.numberOfRooms.double">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="mb-2 text-center">
+                                <label class="form-label f-1" for="basic-default-fullname">Triple<span class="text-danger h6">*</span></label>
+                                <input type="number" class="form-control" [(ngModel)]="newAccomodation.numberOfRooms.triple">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="mb-2">
+                                <label class="form-label f-1" for="basic-default-fullname">Extra<span class="text-danger h6">*</span></label>
+                                <input type="number" class="form-control" [(ngModel)]="newAccomodation.numberOfRooms.extra_bed">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="mb-2 text-center">
+                                <label class="form-label f-1" for="basic-default-fullname">CWB<span class="text-danger h6">*</span></label>
+                                <input type="number" class="form-control" [(ngModel)]="newAccomodation.numberOfRooms.CWB">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="mb-2 text-center">
+                                <label class="form-label f-1" for="basic-default-fullname">CNB<span class="text-danger h6">*</span></label>
+                                <input type="number" class="form-control" [(ngModel)]="newAccomodation.numberOfRooms.CNB">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="closeModal('addHotelModal')">Close</button>
+              <button type="button" class="btn btn-primary" (click)="AddHotelToItinerary()">Add</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    
+</div>

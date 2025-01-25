@@ -5,6 +5,7 @@ import { LoadingService } from '../../loading.service';
 import { ApiService } from '../../api.service';
 import { ModalComponent } from '../../common/modal/modal.component';
 import { ToastService } from '../../toast.service';
+import { RouterModule } from '@angular/router';
 declare var $: any;
 
 interface roomType{
@@ -16,7 +17,7 @@ interface roomType{
 @Component({
   selector: 'app-room-type',
   standalone: true,
-  imports: [CommonModule, ModalComponent, FormsModule],
+  imports: [CommonModule, ModalComponent, FormsModule, RouterModule],
   templateUrl: './room-type.component.html',
   styleUrl: './room-type.component.css'
 })
@@ -130,6 +131,7 @@ export class RoomTypeComponent {
   }
 
   protected addRoomTypeDetails() {
+    this.addRoomTypeName = '';
     $('#addRoomTypeModal').modal('show');
   }
 

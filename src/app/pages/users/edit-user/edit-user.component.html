@@ -50,7 +50,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="row pb-3">
+                <div class="row pb-3" *ngIf="user.role_id == 1 || user.role_id ==2">
                     <div class="col-md-6">
                       <label class="form-label" for="basic-default-company">User Type<span class="text-danger h6">*</span></label>
                         <select name="user_type" [(ngModel)]="user.user_type" id="user_type" class="form-select">

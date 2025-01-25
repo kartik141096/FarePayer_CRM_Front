@@ -10,23 +10,6 @@
           <div class="card-body">
             <form (ngSubmit)="onSubmit()">
               <div class="row">
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label" for="basic-default-fullname">Mobile Number <span class="text-danger h6">*</span></label>
-                    <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.mobile" id="basic-default-fullname" placeholder="+91 856 9586 405" />
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label" for="basic-default-company">Email ID <span class="text-danger h6">*</span></label>
-                    <div class="input-group input-group-merge">
-                      <input type="mail" id="basic-default-email" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.email" placeholder="john.doe@example.com" aria-label="john.doe" aria-describedby="basic-default-email2" />
-                      <span class="input-group-text" id="basic-default-email2">&#64;example.com</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
                 <div class="col-md-2">
                   <div class="mb-3">
                     <label for="exampleFormControlSelect1" class="form-label">Title <span class="text-danger h6">*</span></label>
@@ -48,18 +31,51 @@
                 </div>
                 <div class="col-md-6">
                   <div class="mb-3">
+                    <label class="form-label" for="basic-default-fullname">Mobile Number <span class="text-danger h6">*</span></label>
+                    <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.mobile" id="basic-default-fullname" placeholder="+91 856 9586 405" />
+                  </div>
+                </div>
+                
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
                     <label class="form-label" for="basic-default-fullname">Destination <span class="text-danger h6">*</span></label>
                     
                     <input type="text" class="form-control" [(ngModel)]="searchTerm" name="dest" (ngModelChange)="onSearchChange()" placeholder="Search Destination"  autocomplete="off"/>
                 
                     <div *ngIf="searchTerm.length > 0 && filteredCities.length > 0" class="custom-dropdown">
                       <div class="custom-dropdown-item" *ngFor="let city of filteredCities" (click)="selectCity(city)">
-                        {{ city.name }}
+                        {{ city.name }} ({{city.type}})
                       </div>
                     </div>
                   </div>
                 </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label" for="basic-default-company">Email ID <span class="text-danger h6">*</span></label>
+                    <div class="input-group input-group-merge">
+                      <input type="mail" id="basic-default-email" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="addQuery.email" placeholder="john.doe@example.com" aria-label="john.doe" aria-describedby="basic-default-email2" />
+                      <span class="input-group-text" id="basic-default-email2">&#64;example.com</span>
+                    </div>
+                  </div>
+                </div>
               </div>
+              <div class="row">
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-default-fullname">Selected Destinations <span class="text-danger h6">*</span></label>
+                        <div class="demo-inline-spacing form-control" style="height: 40px;">
+                            <div class="bs-toast custom-toast toast fade show bg-secondary" *ngFor="let destination of addQuery.destinations">
+                                <div class="custom-toast-header toast-header">
+                                  <div class="me-auto fw-semibold">{{destination.name}}</div>
+                                  <button type="button" (click)="deleteDestinationById(destination.id)" class="btn-close"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
               <div class="row">
                 <div class="col-md-3">
                   <div class="mb-3">

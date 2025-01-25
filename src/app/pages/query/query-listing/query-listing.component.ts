@@ -11,6 +11,29 @@ interface User {
   name: string;
 }
 
+interface Query {
+  id: number;
+  title: string;
+  name: string;
+  mobile: string;
+  email: string;
+  destination: string;
+  adult_count: number;
+  child_count: number;
+  infant_count: number;
+  from_date: string;
+  to_date: string;
+  source: string;
+  status: string;
+  priority: string;
+  assign_to: number;  // Assuming 'assign_to' is a user ID
+  created_on: string;
+  updated_on: string;
+  assign_to_name?: string;  // Optionally, store the user name here
+  assign_to_email?: string;  // Optionally, store the user name here
+}
+
+
 @Component({
   selector: 'app-query-listing',
   standalone: true,
@@ -38,7 +61,7 @@ export class QueryListingComponent {
   ){
     this.getQueries(); 
     this.getSalesUsers();
-    this.getQueryDestinations();   
+    this.getQueryDestinations();
   }
 
   @ViewChild('created_from') createdFrom!: ElementRef;
@@ -136,8 +159,7 @@ export class QueryListingComponent {
     }
   }
 
-  private getQueries(){
-
+  private getQueries() {
     this.loadingService.show();
     this.apiservice.getQueries(String(this.page), this.filterData).subscribe({
       next: (response) => {
@@ -145,23 +167,23 @@ export class QueryListingComponent {
         this.lastPage = response.last_page;
         this.totalQueries = response.total;
         this.viewportScroller.scrollToPosition([0, 0]);
-        this.loadingService.hide();
+          this.loadingService.hide();
       },
       error: (error) => {
         console.error('An Error Occured : ', error);
         this.loadingService.hide();
-        if(error.error.message == 'Unauthenticated.')
+        if (error.error.message === 'Unauthenticated.') {
           this.authService.logout();
+        }
       }
     });
   }
-
+  
   private getQueryDestinations(){
     this.loadingService.show();
     this.apiservice.getQueryDestinations().subscribe({
       next: (response) => {
         this.destinationList = response;
-        console.log(this.destinationList)
         this.loadingService.hide();
       },
       error: (error) => {
@@ -183,4 +205,16 @@ export class QueryListingComponent {
       }
     });
   }
+
+  protected dateFormat(oldDate:string): string {
+    const date = new Date(oldDate);
+
+    return date instanceof Date && !isNaN(date.getTime()) 
+      ? date.toLocaleDateString('en-GB') 
+      : '';
+
+  }
+  
+  
+
 }

@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 interface Destination {
   id: number;
   name: string;
+  type:string;
 }
 
 interface Itinerary { 
@@ -24,7 +25,7 @@ interface Itinerary {
 @Component({
   selector: 'app-add-itinerary',
   standalone: true,
-  imports: [CommonModule, FormsModule], // Import modal component here
+  imports: [CommonModule, FormsModule],
   templateUrl: './add-itinerary.component.html',
   styleUrls: ['./add-itinerary.component.css']
 })
@@ -67,7 +68,7 @@ export class AddItineraryComponent {
       if (!this.itinerary.destination) {
         this.itinerary.destination = [];
       }
-      this.itinerary.destination.push({ id: city.id, name: city.name });
+      this.itinerary.destination.push({ id: city.id, name: city.name, type: city.type });
       this.searchTerm = '';
     } else {
       this.toastservice.showToast(city.name + " already selected");
@@ -76,13 +77,13 @@ export class AddItineraryComponent {
   }
   
   deleteDestinationById(id: number): void {
-    this.itinerary.destination = this.selectedDestinations.filter(destination => destination.id !== id);
+    this.itinerary.destination = this.itinerary.destination.filter(destination => destination.id !== id);
   }
   
   onSubmit(){
     this.apiservice.addItinerary(this.itinerary).subscribe({
-      next: () => {
-        this.toastservice.showToast("User updated successfully");
+      next: (response) => {
+        this.toastservice.showToast(response.message);
         this.router.navigate([`/itinerary-listing`]);
       },
       error: (error) => {

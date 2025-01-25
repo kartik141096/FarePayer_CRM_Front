@@ -39,7 +39,7 @@
 
                             <select class="form-select" (change)="updateFilterData('destination', destination.value)" #destination>
                                 <option value="">All Destinations</option>
-                                <option *ngFor="let destination of destinationList" value="{{destination.id}}">{{destination.name}}</option>
+                                <option *ngFor="let destination of destinationList" value="{{destination.id}}">{{destination.name}} ({{destination.type}})</option>
                             </select>
                         </div>
                         <div class="col-md-3">
@@ -64,44 +64,30 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Itinerary Name</th>
+                            <th>Itinerary Details</th>
                             <th>Location</th>
-                            <th>Duration</th>
-                            <th>Date</th>
-                            <th>Action</th>
+                            <th>Dates</th>
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
-                        <tr *ngFor="let itinerary of itineraries">
+                        <tr *ngFor="let itinerary of itineraries" [routerLink]="['/edit-itinerary', itinerary.id]" class="lh-1">
                             <td>
                                 <strong>{{itinerary.id}}</strong>
                             </td>
-                            <td><strong>{{itinerary.name}}</strong></td>
+                            <td class="text-primary">
+                                <p><strong class="text-secondary">Name : </strong>{{itinerary.name}}</p>
+                                <p><strong class="text-secondary">Duration : </strong>{{itinerary.duration}}</p>
+                            </td>
                             <td>
-                                <span *ngFor="let destination of itinerary.destinations">
+                                <span *ngFor="let destination of itinerary.destinations" class="badge bg-label-primary me-1">
                                     {{destination.name}}
-                                    <strong> | </strong>
                                 </span>
                             </td>
-                            <td>{{itinerary.duration}}</td>
                             <td>
-                                <p><img src="https://static-00.iconduck.com/assets.00/calendar-icon-1995x2048-tot17508.png" height=15 alt=""><Strong> Start Date : </Strong>{{dateFormat(itinerary.start_date)}}</p>
-                                <p><img src="https://static-00.iconduck.com/assets.00/calendar-icon-1995x2048-tot17508.png" height=15 alt=""><Strong> End Date : </Strong>{{dateFormat(itinerary.end_date)}}</p>
-                            </td>
-                            <td>
-                                <div class="dropdown">
-                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                        <i class="bx bx-dots-vertical-rounded"></i>
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item"[routerLink]="['/edit-itinerary', userId]" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
-                                    </div>
-                                </div>
+                                <p><img src="assets/img/icons/custom/date.png" height=15 alt=""><Strong> Start Date : </Strong>{{dateFormat(itinerary.start_date)}}</p>
+                                <p><img src="assets/img/icons/custom/date.png" height=15 alt=""><Strong> End Date : </Strong>{{dateFormat(itinerary.end_date)}}</p>
                             </td>
                         </tr>
-                        
-                        
                     </tbody>
                 </table>
             </div>

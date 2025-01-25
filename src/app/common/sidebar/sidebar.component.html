@@ -45,13 +45,13 @@
             </ul>
           </li>
 
-          <li class="menu-item" [ngClass]="{ 'active': activeRoute('itinerary-listing|add-itinerary') }">
+          <li class="menu-item" [ngClass]="{ 'active': activeRoute('itinerary-listing|add-itinerary|edit-itinerary') }">
             <a (click)="toggleMenu('Itineraries')" href="javascript:void(0);" class="menu-link menu-toggle">
               <img src="https://img.clipart-library.com/2/clip-itinerary/clip-itinerary-8.png" height="30" alt="">
               Itineraries
             </a>
             <ul class="menu-sub" [ngClass]="{'show': menuStates['Itineraries']}">
-              <li class="menu-item" [ngClass]="{ 'active': activeRoute('itinerary-listing') }">
+              <li class="menu-item" [ngClass]="{ 'active': activeRoute('itinerary-listing|edit-itinerary') }">
                 <a routerLink="/itinerary-listing" class="menu-link">
                   Show All Itineraries
                 </a>
@@ -65,7 +65,6 @@
             </ul>
           </li>
           
-          <!-- <li class="menu-item" *ngIf="this.userRole =='1' || this.userRole =='2' " [ngClass]="{'active': currentRoute === '/user-listing' || currentRoute === '/add-user'}"> -->
             <li class="menu-item" *ngIf="userRole === '1' || userRole === '2'" [ngClass]="{ 'active': activeRoute('user-listing|add-user|user-details|edit-user|change-password') }">
             <a (click)="toggleMenu('Users')" href="javascript:void(0);" class="menu-link menu-toggle">
               <img src="https://adoption.microsoft.com/wp-content/uploads/2022/05/business-user-icon.png" height="30" alt="">

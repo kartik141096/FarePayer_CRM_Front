@@ -9,24 +9,40 @@
             <div class="card-body">
                 <div class="container">
                     <div class="row">
-                        <a [routerLink]="['/settings/room-type']" routerLinkActive="router-link-active"  class="col-md-6 text-center border pt-5 box">
+                        <a [routerLink]="['/settings/room-type']" class="col-md-3 text-center border pt-5 box">
                             <img src="assets/img/icons/custom/settings/room_type.png" height="100" alt="">
-                            <h5 class="pt-4"><strong>Room Type</strong></h5>
+                            <h5 class="pt-4"><strong>Room Types</strong></h5>
                         </a>
-                        <a [routerLink]="['/routePath']" routerLinkActive="router-link-active"  class="col-md-6 text-center border pt-5 box">
+                        <a [routerLink]="['/settings/meal-plan']" class="col-md-3 text-center border pt-5 box">
                             <img src="assets/img/icons/custom/settings/meal_plane.png" height="100" alt="">
-                            <h5 class="pt-4"><strong>Meal Plan</strong></h5>
+                            <h5 class="pt-4"><strong>Meal Plans</strong></h5>
+                        </a>
+                        <a [routerLink]="['/settings/hotel-listing']" class="col-md-3 text-center border pt-5 box">
+                          <img src="assets/img/icons/custom/settings/hotel.webp" height="100" alt="">
+                          <h5 class="pt-4"><strong>Hotels</strong></h5>
+                        </a>
+                        <a [routerLink]="['/settings/activities-listing/']" class="col-md-3 text-center border pt-5 box">
+                          <img src="assets/img/icons/custom/settings/activities.png" height="100" alt="">
+                          <h5 class="pt-4"><strong>Activities</strong></h5>
                         </a>
                     </div>
                     <div class="row">
-                        <a [routerLink]="['/routePath']" routerLinkActive="router-link-active"  class="col-md-6 text-center border pt-5 box">
-                            <img src="assets/img/icons/custom/settings/hotel.webp" height="100" alt="">
-                            <h5 class="pt-4"><strong>Hotels</strong></h5>
-                        </a>
-                        <a [routerLink]="['/routePath']" routerLinkActive="router-link-active"  class="col-md-6 text-center border pt-5 box">
-                            <img src="assets/img/icons/custom/settings/activities.png" height="100" alt="">
-                            <h5 class="pt-4"><strong>Activities</strong></h5>
-                        </a>
+                      <a [routerLink]="['/routePath']" class="col-md-3 text-center border pt-5 box">
+                        <img src="assets/img/icons/custom/settings/destinations.png" height="100" alt="">
+                        <h5 class="pt-4"><strong>Destinations</strong></h5>
+                      </a>
+                      <a [routerLink]="['/settings/transfers-listing']" class="col-md-3 text-center border pt-5 box">
+                        <img src="assets/img/icons/custom/settings/transfer.png" height="100" alt="">
+                        <h5 class="pt-4"><strong>Transfers</strong></h5>
+                      </a>
+                      <a [routerLink]="['/settings/suppliers']" class="col-md-3 text-center border pt-5 box">
+                        <img src="assets/img/icons/custom/settings/suppliers.webp" height="100" alt="">
+                        <h5 class="pt-4"><strong>Suppliers</strong></h5>
+                      </a>
+                      <a [routerLink]="['/routePath']" class="col-md-3 text-center border pt-5 box">
+                        <img src="assets/img/icons/custom/settings/day_itinerary.png" height="100" alt="">
+                        <h5 class="pt-4"><strong>Day Itinerary</strong></h5>
+                      </a>
                     </div>
                 </div>
             </div>

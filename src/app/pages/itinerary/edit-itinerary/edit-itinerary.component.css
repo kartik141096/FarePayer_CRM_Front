@@ -46,8 +46,8 @@ ul{
     border-radius: 20px 20px 0 0;
     border: 1px solid rgb(175, 174, 174);
     border-bottom: 5px solid rgb(175, 174, 174);
-    /* background-color: #6cc400; */
-    background: linear-gradient(90deg, rgba(108,196,0,0.5522584033613445) 0%, rgba(0,175,239,1) 54%, rgba(108,196,0,0.5494572829131652) 100%);
+    background: linear-gradient(90deg, rgba(35, 173, 0, 0.692) 0%, rgb(2, 118, 172) 50%, rgba(35, 173, 0, 0.692) 100%);
+    /* background: linear-gradient(90deg, rgba(108,196,0,0.5522584033613445) 0%, rgba(0,175,239,1) 54%, rgba(108,196,0,0.5494572829131652) 100%); */
 }
 .itinerary-name h3{
     color: white;
@@ -62,13 +62,35 @@ ul{
     border-right:1px solid rgb(175, 174, 174);
     border-bottom:1px solid rgb(175, 174, 174);
     border-radius: 0 0 20px 0;
-    
+    max-height: 400px;
+    min-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px;
 }
-
 
 .message{
     font-size: 9px;
 }
+
 .text-gold{
     color: rgb(196, 148, 18);
+}
+
+.pointer{
+    cursor: pointer;
+    border: 1px solid #ffffff;
+    transition: border 0.3s ease;
+}
+
+.pointer:hover{
+    background-color: #0084cb13;
+    border: 1px solid #0084cb;
+    user-select: none;
+}
+.f-1{
+    font-size: 11px;
+}
+.f-2{
+    font-size: 12px;
 }

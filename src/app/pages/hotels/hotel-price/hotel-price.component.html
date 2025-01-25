@@ -1,0 +1,172 @@
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-md-1">
+            <button class="btn btn-success" [routerLink]="['/settings/hotel-listing']"><i class="bx bx-arrow-back"></i></button>
+        </div>
+        <div class="col-md-7 pt-2">            
+            <h4 class="fw-bold col-md-10 mb-0"><span class="text-muted fw-light">Settings / Hotels /</span> Price List <span class="text-muted">({{totalHotelsPriceList}})</span></h4> 
+        </div>
+        <div class="col-md-4">
+            <div class="float-right">
+                <button class="btn btn-primary ml-2" (click)="addHotelPriceModal()">Add Hotel Price</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content-wrapper">
+
+    <div class="card m-4">
+        <div class="table-responsive text-nowrap">
+            <table class="table table-hover text-center">
+                <thead>
+                    <tr>
+                        <th>From Date</th>
+                        <th>To Date</th>
+                        <th>Room Type</th>
+                        <th>Meal Plan</th>
+                        <th>Single Price</th>
+                        <th>Double Price</th>
+                        <th>Triple Price</th>
+                        <th>Extra Bed Price</th>
+                        <th>CWB Price</th>
+                        <th>CNB Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                    <tr *ngFor="let hotelPrice of hotelPriceList"> 
+                        <td>{{dateFormat(hotelPrice.from_date)}}</td>
+                        <td>{{dateFormat(hotelPrice.to_date)}}</td>
+                        <td>{{hotelPrice.room_type.name}}</td>
+                        <td>{{hotelPrice.meal_plan.name}}</td>
+                        <td>{{hotelPrice.single_price}}</td>
+                        <td>{{hotelPrice.double_price}}</td>
+                        <td>{{hotelPrice.triple_price}}</td>
+                        <td>{{hotelPrice.extra_bed}}</td>
+                        <td>{{hotelPrice.CWB_price}}</td>
+                        <td>{{hotelPrice.CNB_price}}</td>
+                        <td>
+                            <a (click)="confirmDeleteHotel(hotelPrice.id)" href="javascript:void(0);">
+                                <img src="assets/img/icons/custom/delete.png" height="20" alt="">
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <li class="page-item prev">
+                <a class="page-link" (click)="this.pageChange('-')" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-left"></i></a>
+            </li>
+            
+            <li *ngFor="let pageNum of [].constructor(lastPage); let i = index" 
+                [class.active]="page === (i + 1)" 
+                class="page-item">
+                <a class="page-link" (click)="pageChange(i + 1)" href="javascript:void(0);">{{ i + 1 }}</a>
+            </li>
+
+            <li class="page-item next">
+                <a class="page-link" (click)="this.pageChange('+')" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-right"></i></a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<div class="modal fade" id="addHotelPriceModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add New Hotel</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeHotelPriceModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-default-fullname">From Date<span class="text-danger h6">*</span></label>
+                        <input type="date" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="hotelPrice.from_date">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-default-fullname">To Date<span class="text-danger h6">*</span></label>
+                        <input type="date" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="hotelPrice.to_date">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-default-fullname">Room Type<span class="text-danger h6">*</span></label>
+                        <select  class="form-select" [ngModelOptions]="{standalone: true}" [(ngModel)]="hotelPrice.room_type">
+                            <option value="0" disabled>Select</option>
+                            <option *ngFor="let roomType of roomTypes" value="{{roomType.id}}">{{roomType.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-default-fullname">Meal Plan<span class="text-danger h6">*</span></label>
+                        <select class="form-select" [ngModelOptions]="{standalone: true}" [(ngModel)]="hotelPrice.meal_plan">
+                            <option value="0" disabled>Select</option>
+                            <option *ngFor="let mealPlan of mealPlans" value="{{mealPlan.id}}">{{mealPlan.name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-default-fullname">Single Price<span class="text-danger h6">*</span></label>
+                        <input type="number" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="hotelPrice.single_price">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-default-fullname">Double Price<span class="text-danger h6">*</span></label>
+                        <input type="number" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="hotelPrice.double_price">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-default-fullname">Triple Price<span class="text-danger h6">*</span></label>
+                        <input type="number" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="hotelPrice.triple_price">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-default-fullname">Extra Bed Price<span class="text-danger h6">*</span></label>
+                        <input type="number" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="hotelPrice.extra_bed">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-default-fullname">CWB Price<span class="text-danger h6">*</span></label>
+                        <input type="number" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="hotelPrice.CWB_price">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-default-fullname">CNB Price<span class="text-danger h6">*</span></label>
+                        <input type="number" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="hotelPrice.CNB_price">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeHotelPriceModal()">Close</button>
+          <button type="button" class="btn btn-primary" (click)="addHotelPrice()">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<app-modal [modalTitle]="modalTitle" [modalContent]="modalContent" [confirmAction]="confirmDeleteHotel"></app-modal>

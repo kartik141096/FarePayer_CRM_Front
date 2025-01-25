@@ -5,15 +5,33 @@ import { ApiService } from '../../../api.service';
 import { ToastService } from '../../../toast.service';
 import { LoadingService } from '../../../loading.service';
 
-interface DestinationResponse {
+interface Destination {
   id: number;
   name: string;
+  type: string;
 }
 interface User {
   id: number;
   name: string;
 }
 
+interface query {
+  mobile: string,
+  email: string,
+  title: string,
+  name: string,
+  destinations: Destination[],
+  from_date: string,
+  to_date: string,
+  adult_count: string,
+  child_count: string,
+  infant_count: string,
+  source: string,
+  priority: string,
+  query_type: string,
+  assign_to: string,
+  remarks: string,
+}
 
 @Component({
   selector: 'app-add-query',
@@ -37,12 +55,12 @@ export class AddQueryComponent {
     private LoadingService:LoadingService, 
   ){}
 
-  addQuery = {
+  addQuery:query = {
     mobile: '',
     email: '',
     title: '',
     name: '',
-    destination: 0,
+    destinations: [],
     from_date: '',
     to_date: '',
     adult_count: '0',
@@ -56,11 +74,11 @@ export class AddQueryComponent {
   };
 
   users : User[]=[];
-
-  filteredCities: DestinationResponse[] = [];
+  selectedDestinations: Destination[] = [];
+  filteredCities: Destination[] = [];
   searchTerm: string = '';
 
-  destinations: DestinationResponse[] = [];
+  destinations: Destination[] = [];
   selectedDestinationId: number = 0;
 
 
@@ -80,9 +98,18 @@ export class AddQueryComponent {
     }
   }
   
-  selectCity(city: DestinationResponse): void {
-    this.addQuery.destination = city.id;
-    this.searchTerm = city.name;
+  selectCity(city: Destination): void {
+
+    const cityExists = this.addQuery.destinations?.some(destination => destination.id === city.id);
+    if (!cityExists) {
+      if (!this.addQuery.destinations) {
+        this.addQuery.destinations = [];
+      }
+      this.addQuery.destinations.push({ id: city.id, name: city.name, type:city.type });
+      this.searchTerm = '';
+    } else {
+      this.toastService.showToast(city.name + " already selected");
+    }
     this.filteredCities = [];
   }
 
@@ -125,7 +152,9 @@ export class AddQueryComponent {
     });
   }
   
-
+  deleteDestinationById(id: number): void {
+    this.addQuery.destinations = this.addQuery.destinations.filter(destination => destination.id !== id);
+  }
 
 
 }

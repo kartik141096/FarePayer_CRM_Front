@@ -27,6 +27,7 @@ export class AuthService {
   }
 
   logout(): void {
+    localStorage.removeItem('user_id');
     localStorage.removeItem('access_token');
     localStorage.removeItem('user_role');
     localStorage.removeItem('user_type');
@@ -35,9 +36,9 @@ export class AuthService {
 
   login(token: string, role:string, user_type:string, user_id:string): void {
     localStorage.setItem('user_id', user_id);
+    localStorage.setItem('access_token', token);
     localStorage.setItem('user_role', role);
     localStorage.setItem('user_type', user_type);
-    localStorage.setItem('access_token', token);
     this.router.navigate(['/dashboard']);
   }
 

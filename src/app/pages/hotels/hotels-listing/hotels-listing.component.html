@@ -1,0 +1,199 @@
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-md-1">
+            <button class="btn btn-success" [routerLink]="['/settings']"><i class="bx bx-arrow-back"></i></button>
+        </div>
+        <div class="col-md-7 pt-2">            
+            <h4 class="fw-bold col-md-10 mb-0"><span class="text-muted fw-light">Settings /</span> Hotels <span class="text-muted">({{totalHotels}})</span></h4> 
+        </div>
+        <div class="col-md-4">
+            <div class="float-right">
+                <button class="btn btn-primary ml-2" (click)="addHotelDetails()">Add Hotel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content-wrapper">
+
+    <div class="card m-4">
+        <div class="table-responsive text-nowrap">
+            <table class="table table-hover text-center">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Destination</th>
+                        <th>Active Status</th>
+                        <th>Add Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                    <tr *ngFor="let hotel of hotels">
+                        <td><strong>{{hotel.id}}</strong><br></td>
+                        <td>{{hotel.name}}</td>
+                        <td>
+                            <!-- Check if the category matches the star pattern -->
+                            <ng-container *ngIf="getStarCount(hotel.category) !== null; else invalidCategory">
+                              <ng-container *ngFor="let star of [1, 2, 3, 4, 5]; let i = index">
+                                <span 
+                                  class="fa fa-star" 
+                                  [ngClass]="{'checked': i < (getStarCount(hotel.category) || 0)}">
+                                </span>
+                              </ng-container>
+                            </ng-container>
+                          
+                            <!-- Fallback template for invalid categories -->
+                            <ng-template #invalidCategory>
+                              <strong class="text-primary">{{ hotel.category }}</strong>
+                            </ng-template>
+                        </td>
+                        <td>{{hotel.destination_name}}</td>
+                          
+                        <td class="form-switch pl-5">
+                            <input [checked]="hotel.status" (change)="changeHotelStatus(hotel.id)" type="checkbox" class="form-check-input">
+                        </td>
+                        <td><a [routerLink]="['/settings/hotel-price',hotel.id]" href="javascript:void(0);"><i class="bx bx-bible me-1"></i></a></td>
+                        <td>
+                            <div class="dropdown">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" (click)="editHotelDetails(hotel.id)" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i>Edit</a>
+                                    <a class="dropdown-item" (click)="confirmDeleteHotel(hotel.id)" href="javascript:void(0);"><i class="bx bx-delete-outline me-1"></i>Delete</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <li class="page-item prev">
+                <a class="page-link" (click)="this.pageChange('-')" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-left"></i></a>
+            </li>
+            
+            <li *ngFor="let pageNum of [].constructor(lastPage); let i = index" 
+                [class.active]="page === (i + 1)" 
+                class="page-item">
+                <a class="page-link" (click)="pageChange(i + 1)" href="javascript:void(0);">{{ i + 1 }}</a>
+            </li>
+
+            <li class="page-item next">
+                <a class="page-link" (click)="this.pageChange('+')" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-right"></i></a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<div class="modal fade" id="addHotelModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{modalTitle}}</h5>
+          <!-- <h5 class="modal-title">Add New Hotel</h5> -->
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeHotelModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-default-fullname">Hotel Name<span class="text-danger h6">*</span></label>
+                        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="hotel.name"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-default-fullname">Hotel Website<span class="text-danger h6">*</span></label>
+                        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="hotel.website"/>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-default-fullname">Hotel Category<span class="text-danger h6">*</span></label>
+                        <select  class="form-select" [ngModelOptions]="{standalone: true}" [(ngModel)]="hotel.category">
+                            <option value="" disabled>Select</option>
+                            <option value="1-Star">1-Star</option>
+                            <option value="2-Star">2-Star</option>
+                            <option value="3-Star">3-Star</option>
+                            <option value="4-Star">4-Star</option>
+                            <option value="5-Star">5-Star</option>
+                            <option value="Resort">Resort</option>
+                            <option value="Villa">Villa</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-default-fullname">Destination<span class="text-danger h6">*</span></label>
+                        <input type="text" class="form-control" [(ngModel)]="searchTerm" name="dest" (ngModelChange)="onSearchChange()" placeholder="Search Destination"  autocomplete="off"/>
+                        <div *ngIf="searchTerm.length > 0 && filteredDestinations.length > 0" class="custom-dropdown">
+                            <div class="custom-dropdown-item" *ngFor="let Destination of filteredDestinations" (click)="selectCity(Destination)">
+                                {{ Destination.name }} ({{Destination.type}})
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-default-fullname">Contact Person<span class="text-danger h6">*</span></label>
+                        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="hotel.contact_person"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-default-fullname">Phone<span class="text-danger h6">*</span></label>
+                        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="hotel.phone"/>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-default-fullname">Email<span class="text-danger h6">*</span></label>
+                        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="hotel.email"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    
+                </div>
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-default-fullname">Image<span class="text-danger h6">*</span></label>
+                            <br><img src="{{hotel.img}}" (error)="setDefaultImage($event)" height="50" alt=""><br><br>
+                        <input type="file" class="form-control" (change)="onFileChange($event)" [(ngModel)]="hotel.img"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-default-fullname">Hotel Details<span class="text-danger h6">*</span></label>
+                        <textarea class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="hotel.details"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeHotelModal()">Close</button>
+          <button type="button" class="btn btn-primary" (click)="addOrUpdatehotel()">{{modalSubmitText}}</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+<app-modal [modalTitle]="modalTitle" [modalContent]="modalContent" [confirmAction]="deleteHotel"></app-modal>

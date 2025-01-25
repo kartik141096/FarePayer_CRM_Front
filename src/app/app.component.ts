@@ -1,6 +1,5 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { Router, RouterOutlet, NavigationEnd  } from '@angular/router';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { SidebarComponent } from './common/sidebar/sidebar.component';
 import { NavbarComponent } from './common/navbar/navbar.component';
 import { LoginComponent } from './pages/login/login.component';
@@ -12,7 +11,7 @@ import { ToastComponent } from './common/toast/toast.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, DashboardComponent, SidebarComponent, NavbarComponent, LoginComponent, CommonModule, ToastComponent],
+  imports: [RouterOutlet, SidebarComponent, NavbarComponent, LoginComponent, CommonModule, ToastComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

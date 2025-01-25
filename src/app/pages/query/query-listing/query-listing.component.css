@@ -7,3 +7,7 @@
 .accordion-button{
     padding : 25px 10px 10px 10px;
 }
+
+td{
+    cursor: pointer;
+}
